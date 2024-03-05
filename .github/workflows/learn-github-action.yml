@@ -1,12 +1,12 @@
-name: learn-github-actions
-run-name: ${{ github.actor }} is learning GitHub Actions
+name: Docker Build and push
+run-name: ${{ github.actor }} has triggered the pipeline
 on: 
   push:
     branches:
       - main
 jobs:
-  check-bats-version:
-    runs-on: ubuntu-latest
+  docker-build-push:
+    runs-on: macos-latest-large
     steps:
       - uses: actions/checkout@v4
       - name: Set up Docker Buildx
@@ -20,6 +20,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: tahsib/node-test-app:${{github.sha}}
+          tags: tahsib/node-test-app:${{github.workflow_sha}}
           build-args: |
 
