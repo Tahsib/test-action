@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  SERVICE_NAME: ${{ github.repository_owner }} 
+  SERVICE_NAME: ${{ github.event.repository.name }}
 
 jobs:
   docker-build-push:
@@ -15,9 +15,9 @@ jobs:
       - name: check vars
         shell: bash
         run: |
-          echo ${{ env.SERVICE_NAME }}
+          echo ${{ github.repository_owner }}
           echo ${{ github.repository }}
-          echo ${{ github.event.repository.name }}
+          echo ${{ env.SERVICE_NAME }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
