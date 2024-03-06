@@ -7,6 +7,8 @@ on:
 
 env:
   SERVICE_NAME: ${{ github.event.repository.name }}
+  OWNER: ${{ github.repository_owner }}
+  IMAGE_NAME: "node-test-app"
 
 jobs:
   docker-build-push:
@@ -26,25 +28,29 @@ jobs:
       - name: Extract tags
         shell: bash
         run: |
-          TAGS=$(echo "inte,prep" | tr ',' '\n')
-          echo 'TAGS_ENV<<EOF' >> $GITHUB_ENV
-          for line in $TAGS; do
-            echo -e "$line" >> $GITHUB_ENV
+          tags="inte,prep"
+
+          IFS=',' read -ra words <<< "$tags"
+
+          for ((i=0; i<${#words[@]}; i++)); do
+              words[$i]="tahsib/node-test-app:${words[$i]}"
           done
-          echo 'EOF' >> $GITHUB_ENV
+          
+          input_tags=$(IFS=','; echo "${words[*]}")
+          
+          echo "IMAGE_TAGS=$(echo "$input_tags")" >> $GITHUB_ENV
           
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: "tahsib/node-test-app"
+          images: "${{env.OWNER}}/${{env.IMAGE_NAME}}"
           tags: |
             type=ref,event=branch
             type=ref,event=pr
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=sha
-            "{{ env.TAGS_ENV }}"
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -55,6 +61,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }},${{ env.IMAGE_TAGS }}
           build-args: |
 
