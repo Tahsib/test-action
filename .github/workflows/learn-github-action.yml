@@ -26,11 +26,12 @@ jobs:
       - name: Extract tags
         shell: bash
         run: |
-          TAGS_ENV=$(echo "inte,prep" | tr ',' '\n')
-          echo "$TAGS_ENV">> $GITHUB_ENV
-          # echo 'TAGS_ENV<<EOF' >> $GITHUB_ENV
-          # echo $TAGS >> $GITHUB_ENV
-          # echo 'EOF' >> $GITHUB_ENV
+          TAGS=$(echo "inte,prep" | tr ',' '\n')
+          echo 'TAGS_ENV<<EOF' >> $GITHUB_ENV
+          for line in $TAGS; do
+            echo -e "$line\n" >> $GITHUB_ENV
+          done
+          echo 'EOF' >> $GITHUB_ENV
           
       - name: Docker meta
         id: meta
