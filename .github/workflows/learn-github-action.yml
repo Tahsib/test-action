@@ -30,7 +30,7 @@ jobs:
           echo 'TAGS_ENV<<EOF' >> $GITHUB_ENV
           echo $TAGS >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
-          
+
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
@@ -53,6 +53,5 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: tahsib/node-test-app:${{github.workflow_sha}}
           build-args: |
 
