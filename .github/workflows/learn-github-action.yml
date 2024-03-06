@@ -29,7 +29,7 @@ jobs:
           TAGS=$(echo "inte,prep" | tr ',' '\n')
           echo 'TAGS_ENV<<EOF' >> $GITHUB_ENV
           for line in $TAGS; do
-            echo -e "$line\n" >> $GITHUB_ENV
+            echo -e "$line" >> $GITHUB_ENV
           done
           echo 'EOF' >> $GITHUB_ENV
           
