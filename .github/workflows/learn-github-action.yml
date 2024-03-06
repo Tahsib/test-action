@@ -25,20 +25,20 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       
-      - name: Extract tags
-        shell: bash
-        run: |
-          tags="inte,prep"
+      # - name: Extract tags
+      #   shell: bash
+      #   run: |
+      #     tags="inte,prep"
 
-          IFS=',' read -ra words <<< "$tags"
+      #     IFS=',' read -ra words <<< "$tags"
 
-          for ((i=0; i<${#words[@]}; i++)); do
-              words[$i]="tahsib/node-test-app:${words[$i]}"
-          done
+      #     for ((i=0; i<${#words[@]}; i++)); do
+      #         words[$i]="tahsib/node-test-app:${words[$i]}"
+      #     done
           
-          input_tags=$(IFS=','; echo "${words[*]}")
+      #     input_tags=$(IFS=','; echo "${words[*]}")
           
-          echo "IMAGE_TAGS=$(echo "$input_tags")" >> $GITHUB_ENV
+      #     echo "IMAGE_TAGS=$(echo "$input_tags")" >> $GITHUB_ENV
           
       - name: Docker meta
         id: meta
@@ -61,6 +61,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ${{ steps.meta.outputs.tags }},${{ env.IMAGE_TAGS }}
+          tags: ${{ steps.meta.outputs.tags }},${{ env.IMAGE_TAGS || '' }}
           build-args: |
 
