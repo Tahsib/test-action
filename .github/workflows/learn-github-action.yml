@@ -64,3 +64,14 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }},${{ env.IMAGE_TAGS || '' }}
           build-args: |
 
+      - name: check env
+        shell: bash
+        run: |
+          if [ -n "${{ env.IMAGE_TAGS }}" ]; then
+            echo "IMAGE_TAG is set to $IMAGE_TAG"
+          else
+            echo "Not set!"
+          fi
+          
+          
+
