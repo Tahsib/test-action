@@ -68,7 +68,7 @@ jobs:
         shell: bash
         run: |
           if [ -n "${{ env.IMAGE_TAGS }}" ]; then
-            IFS=',' read -ra TAGS <<< "$IMAGE_TAGS"
+            IFS=',' read -ra TAGS <<< "${{env.IMAGE_TAGS}}"
             for tag in "${TAGS[@]}"; do
                 echo "$tag"
             done
